@@ -36,6 +36,9 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto;
         }
 
         .envelope {
@@ -145,6 +148,10 @@
             padding: 20px;
             top: -250px;
             width: 320px;
+            left: 0;
+            right: 0;
+            margin-left: auto;
+            margin-right: auto;
             box-shadow: 0 20px 40px var(--shadow);
         }
 
@@ -334,6 +341,54 @@
             100% { box-shadow: 0 10px 25px rgba(0,0,0,0.12), 0 0 0 0 rgba(255, 190, 11, 0.35); }
         }
 
+        /* Mobile tweaks for centering and readability */
+        @media (max-width: 480px) {
+            body {
+                overflow-y: auto;
+                overflow-x: hidden;
+                height: auto;
+                min-height: 100vh;
+                padding: 14px 0;
+            }
+            .envelope-wrapper {
+                padding: 12px;
+                max-width: 360px;
+                margin: 0 auto;
+            }
+            .envelope {
+                width: 240px;
+                height: 160px;
+            }
+            .seal {
+                top: 58px;
+            }
+            .envelope-wrapper.open .envelope {
+                transform: translateY(80px);
+            }
+            .envelope-wrapper.open .card {
+                top: -200px;
+                left: 0;
+                right: 0;
+                margin-left: auto;
+                margin-right: auto;
+                width: min(92vw, 360px);
+                max-height: 70vh;
+                padding: 16px;
+                overflow-y: auto;
+            }
+            .card-part img {
+                height: auto;
+                max-height: 32vh;
+            }
+            .headline {
+                font-size: 1.6rem;
+            }
+            .card-nav button {
+                min-width: 100px;
+                padding: 10px 16px;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -445,7 +500,7 @@
 
     function launchHearts() {
         const emojis = ['💙','💛','✨','💫'];
-        const count = 80;
+        const count = (window.innerWidth < 480) ? 40 : 80;
         for (let i = 0; i < count; i++) {
             const span = document.createElement('span');
             span.className = 'floating-emoji';
@@ -453,7 +508,7 @@
             span.style.left = Math.random() * 100 + 'vw';
             span.style.fontSize = (Math.random() * 18 + 12) + 'px';
             document.body.appendChild(span);
-            const duration = Math.random() * 4000 + 4000;
+            const duration = Math.random() * 3000 + 3500;
             const translateX = (Math.random() - 0.5) * 80;
             span.animate([
                 { transform: 'translateY(0) translateX(0)', opacity: 0.9 },
