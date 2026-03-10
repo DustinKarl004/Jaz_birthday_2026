@@ -212,6 +212,10 @@
             min-width: 120px;
             box-shadow: 0 6px 16px rgba(58,134,255,0.35);
             overflow: hidden;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
         .card-nav button:hover {
@@ -366,15 +370,16 @@
                 transform: translateY(80px);
             }
             .envelope-wrapper.open .card {
-                top: -200px;
-                left: 0;
-                right: 0;
-                margin-left: auto;
-                margin-right: auto;
-                width: min(92vw, 360px);
-                max-height: 70vh;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: min(92vw, 380px);
+                max-height: 80vh;
                 padding: 16px;
                 overflow-y: auto;
+                right: auto;
+                margin: 0;
             }
             .card-part img {
                 height: auto;
@@ -387,6 +392,9 @@
                 min-width: 100px;
                 padding: 10px 16px;
             }
+        }
+        @media (pointer: coarse) {
+            .card-nav button:focus { outline: none; }
         }
 
     </style>
@@ -560,17 +568,20 @@
 
         // Card tilt
         const card = document.querySelector('.card');
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = (e.clientX - rect.left) / rect.width;
-            const y = (e.clientY - rect.top) / rect.height;
-            const rotateY = (x - 0.5) * 8;
-            const rotateX = -(y - 0.5) * 8;
-            card.style.transform = 'translateY(0) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)';
-        });
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'translateY(0)';
-        });
+        const allowTilt = window.matchMedia('(pointer: fine)').matches && window.innerWidth >= 768;
+        if (allowTilt) {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width;
+                const y = (e.clientY - rect.top) / rect.height;
+                const rotateY = (x - 0.5) * 8;
+                const rotateX = -(y - 0.5) * 8;
+                card.style.transform = 'translateY(0) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        }
     }
 
     function confettiBurst() {
